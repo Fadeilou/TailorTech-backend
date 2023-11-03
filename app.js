@@ -10,10 +10,14 @@ const jwt = require('jsonwebtoken');
 
 
 const authRoutes = require('./routes/auth');
-// const userRoutes = require('./routes/users');
-// const orderRoutes = require('./routes/orders');
-const modelRoutes = require('./routes/models');
+const userRoutes = require('./routes/users');
 const fabricRoutes = require('./routes/fabrics');
+const modelRoutes = require('./routes/models');
+const orderRoutes = require('./routes/orders');
+const paymentRoutes = require('./routes/payments');
+const shippingRoutes = require('./routes/shippings');
+const measurementsRoutes = require('./routes/measurements');
+
 
 
 
@@ -44,10 +48,14 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
-// app.use('/api/users', userRoutes);
-// app.use('/api/orders', orderRoutes);
-app.use('/api/models', modelRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/fabrics', fabricRoutes);
+app.use('/api/models', modelRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/shippings', shippingRoutes);
+app.use('/api/measurements', measurementsRoutes);
+app.use('/api/orders', orderRoutes);
+
 // ... ajoutez d'autres routes selon vos besoins
 
 // Gestion des erreurs 404

@@ -1,8 +1,9 @@
 const bcrypt = require('bcrypt');
+const { User } = require('../models');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
 const crypto = require('crypto');
 const mailService = require('../services/mailService');
+
 // const nodemailer = require('nodemailer');
 
 // const transporter = nodemailer.createTransport({
@@ -15,12 +16,34 @@ const mailService = require('../services/mailService');
 
 exports.register = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        
-        const newUser = await User.create({ email, password: hashedPassword });
+        const { email, password, firstname, lastname, phone, address, location, profileId } = req.body;
 
-        res.status(201).json({ message: 'User registered successfully', userId: newUser.id });
+        // Check if user already exists
+        const existingUser = await User.findOne({ where: { email: email } });
+        if (existingUser) {
+            return res.status(409).json({ message: 'User already exists' });
+        }
+        
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create the user
+        const newUser = await User.create({ 
+            email, 
+            password: hashedPassword,
+            firstname, 
+            lastname, 
+            phone,
+            address, 
+            location,
+            profilePicture: 'images/profiles/profile-default.png',
+            profileId 
+        });
+
+        // Generate a token
+        const token = jwt.sign({ userId: newUser.id, email: newUser.email }, 'YOUR_SECRET_KEY', { expiresIn: '1h' }); // Replace 'YOUR_SECRET_KEY' with a strong secret key
+
+        res.status(201).json({ message: 'User registered successfully', userId: newUser.id, token: token });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

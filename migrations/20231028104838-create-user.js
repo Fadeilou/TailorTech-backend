@@ -1,66 +1,96 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
+  // Fonction pour appliquer la migration
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Users', {
+      // Identifiant unique et primaire pour chaque utilisateur
       id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
+        allowNull: false, 
+        autoIncrement: true, 
+        primaryKey: true, 
         type: Sequelize.INTEGER
       },
+      // Prénom de l'utilisateur
       firstname: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true 
       },
+      // Nom de famille de l'utilisateur
       lastname: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true 
       },
+      // Numéro de téléphone de l'utilisateur
       phone: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true 
       },
+      // Image de profil de l'utilisateur
       profilePicture: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true, 
+        defaultValue: 'images/profile/default.jpg' 
       },
+      // Adresse de l'utilisateur
       address: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: true
       },
+      // Localisation de l'utilisateur (par exemple, ville ou région)
       location: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true
       },
+      // Adresse e-mail de l'utilisateur, utilisée pour l'authentification
       email: {
         type: Sequelize.STRING,
-        unique: true // Assurez-vous que l'email est unique pour l'authentification
+        unique: true, 
+        allowNull: false 
       },
+      // Mot de passe crypté de l'utilisateur
       password: {
-        type: Sequelize.STRING // Pour stocker le mot de passe crypté
+        type: Sequelize.STRING, 
+        allowNull: false 
       },
+      // Sel utilisé pour le processus de cryptographie du mot de passe
       salt: {
-        type: Sequelize.STRING // Pour le sel utilisé lors de la cryptographie
+        type: Sequelize.STRING, 
+        allowNull: true
       },
+      // Token utilisé pour la réinitialisation du mot de passe
       resetToken: {
-        type: Sequelize.STRING // Pour la réinitialisation du mot de passe
+        type: Sequelize.STRING, 
+        allowNull: true
       },
+      // Date d'expiration du token de réinitialisation
       resetTokenExpiration: {
-        type: Sequelize.DATE // Date d'expiration du token de réinitialisation
+        type: Sequelize.DATE, 
+        allowNull: true
       },
+      // Clé étrangère vers la table "Profiles"
       profileId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Profiles', 
           key: 'id'
         },
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE', 
+        allowNull: true
       },
+      // Date de création de l'utilisateur dans la base de données
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
+      // Date de mise à jour de l'utilisateur dans la base de données
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
+  // Fonction pour annuler la migration
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Users');
   }

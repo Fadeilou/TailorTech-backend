@@ -1,4 +1,5 @@
-const Fabric = require('../models/fabric');
+
+const { Fabric } = require('../models');
 const { Op } = require('sequelize');
 const upload = require('../middlewares/upload');
 

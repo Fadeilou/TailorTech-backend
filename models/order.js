@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
-      this.belongsTo(models.Model, { foreignKey: 'modelId', as: 'model' });
+      this.belongsTo(models.ClothingModel, { foreignKey: 'modelId', as: 'clothingModel' });
       this.belongsTo(models.Fabric, { foreignKey: 'fabricId', as: 'fabric' });
 
       // Une commande peut avoir une seule livraison (pour simplifier, sinon, cela peut être hasMany si une commande peut avoir plusieurs livraisons)
